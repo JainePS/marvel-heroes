@@ -1,54 +1,55 @@
 import { useEffect, useState } from 'react'
-import { APIRequest } from '../services/APIrequestService';
+import { FetchHeroes } from '../services/heroesServices/fetchHeroes';
 import Card from 'react-bootstrap/Card';
 import '/home/learn/Escritorio/projects/learning react/Marvel-SPA/marvel-heroes/src/components/pages/heroes.css'
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { HeroeData} from '../interfaces';
+import { HeroData } from '../interfaces';
+
 
 
 export function Heroes() {
-  const [heroes, setHeroes] = useState<HeroeData[]>();
+  const [heroes, setHeroes] = useState<HeroData[]>();
+  const [heroID, setHeroID] = useState<number>();
   const navigate = useNavigate();
-  
+
   useEffect(() => {
-   APIRequest()
-          .then((result: { data: { data: { results: HeroeData[]}; }; }) => {
-            setHeroes(result.data.data.results);
-          })
-          .catch((err: string) => { 
-            console.log(err)  
-          })
+    FetchHeroes()
+      .then((result: { data: { data: { results: HeroData[] }; }; }) => {
+        setHeroes(result.data.data.results);
+      })
+      .catch((err: string) => {
+        console.log(err)
+      })
   }, [])
 
 
-  function navigateToHeroe(){
-   navigate('/heroe')
-   }
 
- return (
-  <>
+  const heroId = (heroID: number) => {
+    setHeroID(heroID);
+    navigate(`/heroe/${heroID}`);
+  }
 
-  <div className='container' >
-
-    {(!!heroes) && heroes.map(heroes=>
-     <Card style={{ width: '18rem' }} key={heroes.id}>
-     {heroes.name}
-     <Card.Img variant="top" src={`${heroes.thumbnail?.path}.jpg`} />
-     <Card.Body key={heroes.id}>
-     ID:{heroes.id}
-     <hr></hr>
-     <Card.Text>
-     {heroes.description}
-     </Card.Text>
-     </Card.Body>
-     <Button className="btn-color: #f78f3f" onClick={navigateToHeroe}>About</Button>
-     </Card>   
-    )}
-  
-  </div>;
-  </>
- )
+  return (
+    <>
+      <div className='container' >
+        {(!!heroes) && heroes.map(hero =>
+          <><Card style={{ width: '18rem' }} key={hero.id}>
+            <Card.Img variant="top" src={`${hero.thumbnail?.path}.jpg`} />
+            <Card.Body key={hero.id}>
+              <h3>{hero.name}</h3>
+              ID:{hero.id}
+              <hr></hr>
+              <Card.Text>
+                {hero.description}
+              </Card.Text>
+            </Card.Body>
+            <Button className="btn-color: #f78f3f" onClick={() => heroId(hero.id)}>Comics</Button>
+          </Card></>
+        )}
+      </div>;
+    </>
+  )
 }
 
 

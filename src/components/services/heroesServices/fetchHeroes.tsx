@@ -7,7 +7,7 @@ const privateKey: string = "3c3c950fefa0b393f92d52e6fd77be1a36a584da";
 const time = Number(new Date());
 const hash = md5(time + privateKey + publicKey);
 
-export function APIRequest() {
+export function FetchHeroes() {
  
   const APIdata: any = axios.get(`${baseUrl}?ts=${time}&apikey=${publicKey}&hash=${hash}`);
  
