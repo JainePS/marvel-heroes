@@ -6,3 +6,10 @@
     align-content: space-around;
     gap: 15px;
 }
+
+.text-CardText {
+    max-width: 200ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

@@ -12,12 +12,14 @@ function FetchHeroes(limit?: number, offset?: number) {
   let pagination = ``;
   if (!! limit) {
     pagination += `&limit=${limit}`
+   
   }
 
   if(!! offset) {
+    
     pagination +=`&offset=${offset}`  
   }
-  
+  console.log(pagination);
   const url = `${baseUrl}?ts=${time}&apikey=${publicKey}&hash=${hash}${pagination}`
 
   const APIdata: any = axios.get(url);

@@ -31,7 +31,7 @@ export function Heroes() {
   }
 
   function fetchNextPage() {
-    setOffset( (prevOffset) => (prevOffset + limit));
+   
 
     FetchHeroes(limit, offset)
       .then((result: { data: { data: { results: HeroData[] }; }; }) => {
@@ -40,6 +40,8 @@ export function Heroes() {
       .catch((err: string) => {
         console.log(err)
       })
+      setOffset((prevOffset) => (prevOffset + limit));
+
   }
 
   return (
@@ -58,7 +60,7 @@ export function Heroes() {
                 </p>
               }
             >
-              <Row xs={1} md={2} lg={4} className="g-4">
+              <Row  xs={1} md={2} lg={4} className="g-4">
                 {heroes.map(hero =>
                   <>
                     <Col>
@@ -68,7 +70,7 @@ export function Heroes() {
                           <h3>{hero.name}</h3>
                           ID:{hero.id}
                           <hr></hr>
-                          <Card.Text>
+                          <Card.Text className='text-CardText'>
                             {hero.description}
                           </Card.Text>
                         </Card.Body>
