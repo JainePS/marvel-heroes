@@ -8,40 +8,35 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { FetchHeroes } from '../services/heroesServices/fetchHeroes';
 
 export function Heroes() {
-  const [heroes, setHeroes] = useState<HeroData[]>();
   const [heroID, setHeroID] = useState<number>();
   const navigate = useNavigate();
+  const [heroes, setHeroes] = useState<HeroData[]>([]);
 
-  const limit = 8;
+  const [limit, setLimit] = useState(4);
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
-    FetchHeroes(limit, offset)
-      .then((result: { data: { data: { results: HeroData[] }; }; }) => {
-        setHeroes(result.data.data.results);
-      })
-      .catch((err: string) => {
-        console.log(err)
-      })
+    console.log('here');
+
+    fetchNextPage()
   }, [])
+  console.log(heroes);
 
   const heroId = (heroID: number) => {
     setHeroID(heroID);
     navigate(`/heroe/${heroID}`);
   }
 
-  function fetchNextPage() {
-   
+  async function fetchNextPage() {
+    setOffset((prevOffset) => ((prevOffset ?? limit) + limit));
 
-    FetchHeroes(limit, offset)
-      .then((result: { data: { data: { results: HeroData[] }; }; }) => {
-        setHeroes((prevState) => (prevState ?? []).concat(...(result.data.data.results)));
-      })
-      .catch((err: string) => {
-        console.log(err)
-      })
-      setOffset((prevOffset) => (prevOffset + limit));
-
+    try {
+      const result = await FetchHeroes(limit, offset);
+      setHeroes((prevState) => (prevState ?? []).concat(...(result.data.data.results)));
+    } catch (error) {
+      console.log(error)
+    }
+    console.log('olá daqui');
   }
 
   return (
@@ -60,11 +55,11 @@ export function Heroes() {
                 </p>
               }
             >
-              <Row  xs={1} md={2} lg={4} className="g-4">
+              <Row xs={1} md={2} lg={4} className="g-4">
                 {heroes.map(hero =>
                   <>
-                    <Col>
-                      <Card style={{ width: '18rem' }} key={hero.id}>
+                    <Col key={hero.id}>
+                      <Card style={{ width: '18rem' }}>
                         <Card.Img variant="top" src={`${hero.thumbnail?.path}.jpg`} />
                         <Card.Body key={hero.id}>
                           <h3>{hero.name}</h3>

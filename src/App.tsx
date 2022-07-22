@@ -14,9 +14,9 @@ export default function App() {
     <NavBarApp></NavBarApp>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Heroes />}></Route>
           <Route path="/heroe/:heroID" element={<Hero />}></Route>
           <Route path="/search" element={<Search />}></Route>
+          <Route path="/" element={<Heroes />}></Route>
         </Routes>
       </BrowserRouter></>
 

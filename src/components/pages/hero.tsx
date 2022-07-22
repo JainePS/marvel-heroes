@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Button, Card } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { ComicElement, HeroData } from '../interfaces';
 import { useEffect, useState } from "react";
-import { FetchHeroID, FetchHeroComics, FetchHeroStories, FetchHeroEvents } from "../services/heroServices/fetchesHero";
-import InfiniteScroll from 'react-infinite-scroll-component';
+import { FetchHeroID, FetchHeroComics } from "../services/heroServices/fetchesHero";
+
 import '../pages/heroes.css'
 export function Hero() {
   const { heroID } = useParams<string>();
@@ -32,11 +32,6 @@ export function Hero() {
       .catch((err: string) => {
         console.log(err)
       })
-      // .setTimeout(() => {
-      //   setComics(comics?.concat(
-      //     Array.from({ length: 20 })
-      //   ));
-      // }, 1500);
   }, [])
   console.log(comics);
 
